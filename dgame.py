@@ -3,7 +3,7 @@ import time
 import random
 
 GRAVITY = 0
-BONUS_RATE = 0.9
+BONUS_RATE = 0.1
 
 class Rect(arcade.Sprite):
     def __init__(self,cx):
