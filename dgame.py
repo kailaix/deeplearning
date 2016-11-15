@@ -16,7 +16,7 @@ class Bonus(arcade.Sprite):
         self.change_y = 1
 
 
-class MyAppWindow(arcade.Window):
+class DGame(arcade.Window):
     def __init__(self):
         super().__init__(500,500,'DeepLearning Demo')
 
@@ -29,25 +29,24 @@ class MyAppWindow(arcade.Window):
 
         self.score = 0
         self.chances = 3
+        self.status = 0
 
-        arcade.set_background_color(arcade.color.AERO_BLUE)
+
 
     def on_draw(self):
+        arcade.set_background_color(arcade.color.AERO_BLUE)
         arcade.start_render()
         self.person.draw()
         self.rects.draw()
         self.bonus.draw()
         self._panel()
-        if not self.valid_check():
-            if self.chances>=1:
-                self.chances -= 1
-                arcade.draw_text("Start Again", 200,400, arcade.color.RED, 14)
-                self.person.center_x = 250
-                self.person.center_y = 500
-                self._removetop()
-            else:
-                arcade.draw_text("Game Over", 200, 400, arcade.color.RED, 14)
-                self.chances -= 1
+        if self.status==1:
+            self.status = 0
+            arcade.draw_text("Start Again", 200, 400, arcade.color.RED, 14)
+        elif self.status==-1:
+            arcade.draw_text("Game Over", 200, 400, arcade.color.RED, 14)
+
+
 
 
     def on_key_press(self, key, modifiers):
@@ -113,6 +112,17 @@ class MyAppWindow(arcade.Window):
         self.rects.update()
         self.bonus.update()
 
+        if not self.valid_check():
+            if self.chances >= 1:
+                self.chances -= 1
+                self.person.center_x = 250
+                self.person.center_y = 500
+                self._removetop()
+                self.status = 1
+            else:
+
+                self.chances -= 1
+                self.status = -1
 
 
     def _lowerest(self):
@@ -171,7 +181,7 @@ class MyAppWindow(arcade.Window):
 
 
 
-
-MyAppWindow()
-arcade.run()
+if __name__=='__main__':
+    DGame()
+    arcade.run()
 
